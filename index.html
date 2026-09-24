@@ -32,6 +32,7 @@
         <a href="#design">Design</a>
         <a href="#data">Data</a>
         <a href="#journey">Parcours</a>
+        <a href="photo-video.html">Galerie</a>
         <a href="#contact">Contact</a>
       </nav>
       <button class="gnav__burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="gnav-menu"><span></span><span></span></button>
@@ -113,6 +114,8 @@
           <p class="sub reveal">Portraits, produits, lieux et événements. Prise de vue, tri, retouche et étalonnage pour le web, les réseaux sociaux et le print.</p>
         </header>
         <ul class="chips reveal"><li class="chip-app" style="--h:200">Lightroom</li><li class="chip-app" style="--h:205">Photoshop</li><li>Retouche</li><li>Étalonnage</li><li>Photo produit</li><li>Portrait</li></ul>
+        <div class="photo-preview" id="photo-preview"></div>
+        <p class="domain__more reveal"><a class="btn" href="photo-video.html#photos">Voir la galerie photo</a></p>
       </div>
       <div class="carousel" data-cats="photo"></div>
     </section>
@@ -126,7 +129,9 @@
           <p class="sub reveal">Tournage, montage, motion design et mixage audio. Formats courts pour les réseaux sociaux, films de marque et contenus web.</p>
         </header>
         <ul class="chips reveal"><li class="chip-app" style="--h:245">Premiere Pro</li><li class="chip-app" style="--h:260">After Effects</li><li class="chip-app" style="--h:168">Audition</li><li class="chip-app" style="--h:230">Media Encoder</li><li>Tournage</li><li>Motion design</li></ul>
+        <p class="domain__more reveal"><a class="btn" href="photo-video.html#videos">Voir toutes les vidéos</a></p>
       </div>
+      <div class="carousel" id="video-preview"></div>
       <div class="carousel" data-cats="video"></div>
     </section>
 
@@ -259,6 +264,7 @@
   <div class="toast" role="status" aria-live="polite"></div>
 
   <script src="assets/js/projects.js"></script>
+  <script src="assets/js/media.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Photo &amp; Vidéo — Rimiscky Sambala</title>
+  <meta name="description" content="Galerie photo et vidéo de Rimiscky Sambala : portraits, produits, lieux, films de marque et contenus pour les réseaux sociaux." />
+  <meta name="theme-color" content="#fbfbfd" />
+  <meta property="og:title" content="Photo & Vidéo — Rimiscky Sambala" />
+  <meta property="og:description" content="Galerie photo et vidéo" />
+  <meta property="og:image" content="assets/img/profile.jpg" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d1d1f'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Helvetica,Arial' font-weight='600' font-size='28' fill='%23fff'%3ERS%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="page-media">
+  <a class="skip" href="#main">Aller au contenu</a>
+
+  <header class="gnav">
+    <div class="gnav__inner">
+      <a href="index.html" class="gnav__logo" aria-label="Retour à l'accueil">Rimiscky Sambala</a>
+      <nav class="gnav__links" id="gnav-menu" aria-label="Navigation principale">
+        <a href="index.html">Accueil</a>
+        <a href="#photos">Photos</a>
+        <a href="#videos">Vidéos</a>
+        <a href="index.html#web">Web &amp; code</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <button class="gnav__burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="gnav-menu"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero hero--media">
+      <div class="hero__text" data-hero-text>
+        <p class="kicker reveal">Galerie</p>
+        <h1 class="hero__name reveal">Photo &amp; Vidéo.</h1>
+        <p class="hero__lead reveal">Portraits, produits, lieux, films de marque et formats courts.<br />Retouchés dans Lightroom et Photoshop, montés dans Premiere Pro et After Effects.</p>
+        <div class="segmented segmented--jump reveal">
+          <a class="segmented__btn is-active" href="#photos">Photos</a>
+          <a class="segmented__btn" href="#videos">Vidéos</a>
+          <span class="segmented__glider"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHOTOS -->
+    <section class="section section--alt" id="photos">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="kicker reveal">Photographie</p>
+          <h2 class="headline reveal">Photos.</h2>
+        </header>
+        <div class="filters reveal" id="photo-filters" hidden></div>
+        <div class="masonry" id="photo-grid"></div>
+        <div class="empty reveal" id="photo-empty" hidden>
+          <p class="empty__title">La galerie photo arrive bientôt.</p>
+          <p class="empty__text">Une sélection de portraits, de photos produit et de lieux sera publiée ici.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDÉOS -->
+    <section class="section section--dark" id="videos">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="kicker reveal">Vidéo</p>
+          <h2 class="headline reveal">Vidéos.</h2>
+        </header>
+        <div class="video-grid" id="video-grid"></div>
+        <div class="empty reveal" id="video-empty" hidden>
+          <p class="empty__title">Les vidéos arrivent bientôt.</p>
+          <p class="empty__text">Films de marque, formats courts pour les réseaux sociaux et motion design.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact">
+      <div class="wrap wrap--narrow">
+        <h2 class="headline reveal">Un projet photo ou vidéo ?</h2>
+        <div class="contact__cta reveal">
+          <a class="btn btn--lg" href="mailto:rimiscky@gmail.com">Me contacter</a>
+          <a class="link-more" href="index.html">Retour à l'accueil</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <p>© <span id="year"></span> Rimiscky Sam-Gard Sambala</p>
+      <a href="#main">Haut de page</a>
+    </div>
+  </footer>
+
+  <!-- Visionneuse photo -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Visionneuse photo">
+    <div class="lightbox__stage"><img class="lightbox__img" alt="" /></div>
+    <p class="lightbox__caption"></p>
+    <span class="lightbox__count"></span>
+    <button class="lightbox__btn lightbox__close" type="button" aria-label="Fermer" data-lb="close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <button class="lightbox__btn lightbox__prev" type="button" aria-label="Photo précédente" data-lb="-1"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+    <button class="lightbox__btn lightbox__next" type="button" aria-label="Photo suivante" data-lb="1"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
+
+  <!-- Lecteur vidéo (sheet) -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__sheet modal__sheet--video" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <div class="modal__handle" aria-hidden="true"></div>
+      <button class="modal__close" type="button" aria-label="Fermer" data-close>
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <div class="modal__body"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/media.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -74,11 +74,13 @@
     const vh = innerHeight;
     gnav.classList.toggle("is-scrolled", y > 4);
 
-    if (!reduceMotion && heroText && heroPhoto) {
+    if (!reduceMotion && heroText) {
       // Le texte s'efface en douceur, la photo grandit (zoom façon Apple)
       const p = clamp(y / (vh * 0.7), 0, 1);
       heroText.style.transform = `translate3d(0, ${p * -40}px, 0)`;
       heroText.style.opacity = 1 - p * 0.9;
+    }
+    if (!reduceMotion && heroPhoto) {
       const r = heroPhoto.getBoundingClientRect();
       const q = clamp(1 - (r.top + r.height * 0.5) / vh, 0, 1);
       heroPhoto.style.transform = `scale(${0.86 + q * 0.2})`;
@@ -107,7 +109,19 @@
       glider.style.width = `${active.offsetWidth}px`;
       glider.style.transform = `translateX(${active.offsetLeft - 3}px)`;
     };
-    segBtns.forEach((btn) => btn.addEventListener("click", () => {
+    const setActive = (btn) => {
+      segBtns.forEach((b) => b.classList.toggle("is-active", b === btn));
+      moveGlider();
+    };
+    // Variante « ancres » (page photo & vidéo) : l'onglet suit la section visible
+    const jumpLinks = segBtns.filter((b) => b.hash);
+    if (jumpLinks.length) {
+      const segIO = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) setActive(jumpLinks.find((b) => b.hash === `#${e.target.id}`)); });
+      }, { rootMargin: "-40% 0px -55% 0px" });
+      jumpLinks.forEach((b) => { const t = $(b.hash); t && segIO.observe(t); });
+    }
+    segBtns.filter((b) => b.dataset.tab).forEach((btn) => btn.addEventListener("click", () => {
       if (btn.classList.contains("is-active")) return;
       segBtns.forEach((b) => { b.classList.toggle("is-active", b === btn); b.setAttribute("aria-selected", b === btn); });
       $$("[data-panel]").forEach((p) => {
@@ -331,5 +345,131 @@
       const idx = PROJECTS.findIndex((p) => p.id === decodeURIComponent(deep[1]));
       if (idx > -1) openProject(idx);
     }
+  }
+
+  /* ======================================================================
+     PHOTOS & VIDÉOS (page photo-video.html + aperçus de l'accueil)
+     ====================================================================== */
+  const PHOTOS = window.PHOTOS || [];
+  const VIDEOS = window.VIDEOS || [];
+
+  const videoThumb = (v) => {
+    if (v.poster) return v.poster;
+    const yt = (v.url || "").match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/);
+    return yt ? `https://i.ytimg.com/vi/${yt[1]}/hqdefault.jpg` : "";
+  };
+  const videoCardHTML = (v, i) => `
+    <button class="vcard reveal" type="button" data-video="${i}" aria-label="Lire la vidéo ${esc(v.title || "")}">
+      <span class="vcard__media">
+        ${videoThumb(v) ? `<img src="${esc(safeUrl(videoThumb(v)))}" alt="" loading="lazy" onerror="this.remove()" />` : ""}
+        <span class="vcard__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor" stroke="none"/></svg></span>
+      </span>
+      <span class="vcard__title">${esc(v.title || "Vidéo")}</span>
+      ${v.description ? `<span class="vcard__desc">${esc(v.description)}</span>` : ""}
+    </button>`;
+  const bindVideos = (scope) => {
+    $$("[data-video]", scope).forEach((b) => b.addEventListener("click", () => {
+      const v = VIDEOS[+b.dataset.video];
+      openModal(`<div class="pm__video pm__video--flush">${videoEmbed(v.url)}</div>
+        <div class="pm__content"><h2 class="pm__title" id="modal-title">${esc(v.title || "Vidéo")}</h2>${v.description ? `<p class="pm__subtitle">${esc(v.description)}</p>` : ""}</div>`, b);
+    }));
+    observeReveals(scope);
+  };
+
+  // Aperçus sur l'accueil
+  const photoPreview = $("#photo-preview");
+  if (photoPreview && PHOTOS.length) {
+    photoPreview.innerHTML = PHOTOS.slice(0, 6).map((ph) => `<a class="pp reveal" href="photo-video.html#photos"><img src="${esc(safeUrl(ph.src))}" alt="${esc(ph.title || "Photo")}" loading="lazy" /></a>`).join("");
+    observeReveals(photoPreview);
+  }
+  const videoPreview = $("#video-preview");
+  if (videoPreview && VIDEOS.length) bindVideos(makeCarousel(videoPreview, VIDEOS.map(videoCardHTML).join("")));
+
+  // Grille de vidéos
+  const videoGrid = $("#video-grid");
+  if (videoGrid) {
+    if (VIDEOS.length) { videoGrid.innerHTML = VIDEOS.map(videoCardHTML).join(""); bindVideos(videoGrid); }
+    else $("#video-empty").hidden = false;
+  }
+
+  // Galerie photo + filtres
+  const photoGrid = $("#photo-grid");
+  const lightbox = $("#lightbox");
+  if (photoGrid && lightbox) {
+    if (!PHOTOS.length) $("#photo-empty").hidden = false;
+    photoGrid.innerHTML = PHOTOS.map((ph, i) => `
+      <button class="ph reveal" type="button" data-photo="${i}" data-cat="${esc(ph.category || "")}" aria-label="Agrandir : ${esc(ph.title || "photo")}">
+        <img src="${esc(safeUrl(ph.src))}" alt="${esc(ph.title || "")}" loading="lazy" decoding="async" />
+        ${ph.title ? `<span class="ph__title">${esc(ph.title)}</span>` : ""}
+      </button>`).join("");
+    observeReveals(photoGrid);
+
+    const cats = [...new Set(PHOTOS.map((ph) => ph.category).filter(Boolean))];
+    const pf = $("#photo-filters");
+    if (cats.length > 1) {
+      pf.hidden = false;
+      pf.innerHTML = ["Tous", ...cats].map((c, i) => `<button class="filter${i ? "" : " is-active"}" type="button" data-f="${i ? esc(c) : ""}">${esc(c)}</button>`).join("");
+      pf.addEventListener("click", (e) => {
+        const b = e.target.closest(".filter");
+        if (!b) return;
+        $$(".filter", pf).forEach((x) => x.classList.toggle("is-active", x === b));
+        $$(".ph", photoGrid).forEach((el) => {
+          const show = !b.dataset.f || el.dataset.cat === b.dataset.f;
+          el.hidden = !show;
+          if (show && !reduceMotion) el.animate([{ opacity: 0, transform: "scale(0.97)" }, { opacity: 1, transform: "none" }], { duration: 450, easing: "cubic-bezier(0.28, 0.11, 0.32, 1)" });
+        });
+      });
+    }
+
+    // Visionneuse plein écran : flèches, clavier, glisser pour naviguer / fermer
+    const img = $(".lightbox__img", lightbox);
+    const caption = $(".lightbox__caption", lightbox);
+    const count = $(".lightbox__count", lightbox);
+    let current = 0, list = [], lbFocus = null;
+    const visible = () => $$(".ph", photoGrid).filter((el) => !el.hidden).map((el) => +el.dataset.photo);
+    const show = (i, dir = 0) => {
+      current = (i + list.length) % list.length;
+      const ph = PHOTOS[list[current]];
+      img.src = ph.src;
+      img.alt = ph.title || "";
+      caption.textContent = [ph.title, ph.category].filter(Boolean).join(" · ");
+      count.textContent = `${current + 1} / ${list.length}`;
+      if (dir && !reduceMotion) img.animate([{ opacity: 0, transform: `translateX(${dir * 40}px)` }, { opacity: 1, transform: "none" }], { duration: 400, easing: "cubic-bezier(0.28, 0.11, 0.32, 1)" });
+      [1, -1].forEach((d) => { const n = PHOTOS[list[(current + d + list.length) % list.length]]; if (n) new Image().src = n.src; });
+    };
+    const openLb = (idx, trigger) => {
+      list = visible();
+      lbFocus = trigger;
+      show(list.indexOf(idx));
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.classList.add("no-scroll");
+      $(".lightbox__close", lightbox).focus({ preventScroll: true });
+    };
+    const closeLb = () => {
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("no-scroll");
+      lbFocus && lbFocus.focus({ preventScroll: true });
+    };
+    photoGrid.addEventListener("click", (e) => { const b = e.target.closest("[data-photo]"); if (b) openLb(+b.dataset.photo, b); });
+    lightbox.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-lb]");
+      if (b) return b.dataset.lb === "close" ? closeLb() : show(current + +b.dataset.lb, +b.dataset.lb);
+      if (!e.target.closest(".lightbox__img")) closeLb();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (!lightbox.classList.contains("is-open")) return;
+      if (e.key === "Escape") closeLb();
+      if (e.key === "ArrowRight") show(current + 1, 1);
+      if (e.key === "ArrowLeft") show(current - 1, -1);
+    });
+    let tx = 0, ty = 0;
+    lightbox.addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+    lightbox.addEventListener("touchend", (e) => {
+      const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+      else if (dy > 90) closeLb();
+    });
   }
 })();
