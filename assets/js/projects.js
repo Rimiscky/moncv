@@ -4,27 +4,27 @@
    Copie un bloc { ... }, colle-le dans la liste et remplis les champs.
    Tous les champs sont optionnels sauf : id, title, category.
 
-   category : "web" | "cro" | "data" | "ia" | "contenu"
+   category : "web" | "photo" | "cro" | "data" | "ia"
               (les filtres sont définis plus bas dans CATEGORIES)
 
    cover    : image de couverture ("assets/img/projets/mon-projet.jpg").
-              Sans image, une couverture animée est générée automatiquement
-              avec les couleurs "accent" et le texte "glyph".
+              Sans image, une couverture sobre est générée automatiquement
+              avec le texte "glyph".
    gallery  : liste d'images affichées dans la fiche projet.
    video    : lien YouTube, Vimeo ou fichier .mp4 (affiché dans la fiche).
    links    : boutons (site en ligne, GitHub, Behance, PDF, Figma…).
    results  : chiffres clés  -> { value: "+32 %", label: "taux de conversion" }
               Mets uniquement des chiffres réels et vérifiables.
-   featured : true pour afficher le projet en grand dans la grille.
+
    ========================================================================== */
 
 window.CATEGORIES = [
   { id: "all", label: "Tous" },
-  { id: "web", label: "Web & Shopify" },
-  { id: "cro", label: "CRO & UX" },
+  { id: "web", label: "Web & e-commerce" },
+  { id: "photo", label: "Photo & Vidéo" },
+  { id: "cro", label: "Conversion & UX" },
   { id: "data", label: "Data & BI" },
   { id: "ia", label: "IA & Automatisation" },
-  { id: "contenu", label: "Contenu & Com'" },
 ];
 
 window.PROJECTS = [
@@ -36,9 +36,7 @@ window.PROJECTS = [
     year: "2022 – 2023",
     role: "Responsable projet digital (alternance)",
     client: "Conroy Vin & Spiritueux — Sallanches",
-    featured: true,
     glyph: "E-shop",
-    accent: ["#22d3ee", "#6366f1"],
     tags: ["WordPress", "PrestaShop", "SEO", "Performance"],
     summary:
       "Refonte des pages produit, modules interactifs et optimisation des performances d'une boutique de vins & spiritueux.",
@@ -51,6 +49,24 @@ window.PROJECTS = [
     gallery: [],
   },
   {
+    id: "photo-video-portfolio",
+    title: "Photo & vidéo",
+    subtitle: "Sélection de prises de vue et de montages",
+    category: "photo",
+    year: "2022 – 2025",
+    role: "Photographe & vidéaste",
+    glyph: "Photo",
+    tags: ["Photographie", "Tournage", "Montage", "Réseaux sociaux"],
+    summary:
+      "Photos produits, portraits, lieux et vidéos courtes pour les marques et les réseaux sociaux.",
+    description: [
+      "Prise de vue, tournage et montage de contenus pour valoriser des produits, des lieux et des équipes, sur les sites web comme sur les réseaux sociaux.",
+      "À compléter : ajoute ta vidéo (champ video), tes photos (champ gallery) et les logiciels que tu utilises.",
+    ],
+    links: [],
+    gallery: [],
+  },
+  {
     id: "shopify-theme",
     title: "Thème Shopify sur-mesure",
     subtitle: "Sections Liquid & pages produit orientées conversion",
@@ -58,7 +74,6 @@ window.PROJECTS = [
     year: "2025",
     role: "Développeur Shopify",
     glyph: "Liquid",
-    accent: ["#34d399", "#0ea5e9"],
     tags: ["Shopify", "Liquid", "JavaScript", "Responsive"],
     summary:
       "Création de sections personnalisables et d'une page produit pensée pour le mobile et la conversion.",
@@ -77,7 +92,6 @@ window.PROJECTS = [
     year: "2025",
     role: "CRO / UX",
     glyph: "A / B",
-    accent: ["#f472b6", "#8b5cf6"],
     tags: ["A/B test", "Heatmaps", "Scroll depth", "UX"],
     summary:
       "Construction d'hypothèses à partir des heatmaps et du scroll depth, puis tests A/B sur les CTA et landing pages.",
@@ -96,7 +110,6 @@ window.PROJECTS = [
     year: "2025",
     role: "Tracking & Data",
     glyph: "KPI",
-    accent: ["#fbbf24", "#f97316"],
     tags: ["GA4", "GTM", "Meta Pixel", "Power BI"],
     summary:
       "Plan de marquage e-commerce complet et tableau de bord de suivi des KPIs de vente.",
@@ -116,7 +129,6 @@ window.PROJECTS = [
     role: "Assistant data logistique",
     client: "GXO (Amazon)",
     glyph: "Data",
-    accent: ["#60a5fa", "#2563eb"],
     tags: ["Analyse", "Qualité des données", "Flux", "TOUNT", "FLEX AFTX"],
     summary:
       "Analyse d'anomalies et vérification des données internes pour fiabiliser et optimiser les flux logistiques.",
@@ -134,7 +146,6 @@ window.PROJECTS = [
     year: "2025",
     role: "Automatisation & IA",
     glyph: "n8n",
-    accent: ["#a78bfa", "#ec4899"],
     tags: ["N8N", "IA", "API", "Python"],
     summary:
       "Workflows automatisés : collecte de données, enrichissement par IA et envoi de rapports.",
@@ -149,19 +160,17 @@ window.PROJECTS = [
     id: "1745-bagelstein",
     title: "Le 17.45 & Bagelstein",
     subtitle: "Communication digitale & contenus",
-    category: "contenu",
+    category: "photo",
     year: "2024 – 2025",
     role: "Responsable communication digitale",
     client: "Le 17.45 & Bagelstein",
-    featured: true,
-    glyph: "Social",
-    accent: ["#fb7185", "#f59e0b"],
+    glyph: "Photo · Vidéo",
     tags: ["Photo", "Vidéo", "KPI", "Social media"],
     summary:
       "Création de contenus photo & vidéo, pilotage des KPIs et amélioration des funnels de vente locaux.",
     description: [
       "Création de contenus (photo, vidéo), gestion des KPIs (engagement, conversions locales) et amélioration de la visibilité et des funnels de vente.",
-      "Astuce : ajoute ici tes meilleures vidéos (champ video) et photos (champ gallery).",
+      "À compléter : ajoute tes meilleures vidéos (champ video) et photos (champ gallery).",
     ],
     links: [],
     gallery: [],
@@ -174,7 +183,6 @@ window.PROJECTS = [
     year: "2022 – 2025",
     role: "Développeur web freelance",
     glyph: "Web",
-    accent: ["#38bdf8", "#14b8a6"],
     tags: ["WordPress", "PrestaShop", "SEO technique", "UX"],
     summary:
       "Création de sites vitrines et e-commerce, SEO technique et intégration de modules marketing.",

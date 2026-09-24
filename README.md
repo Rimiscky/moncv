@@ -1,6 +1,6 @@
 # Portfolio — Rimiscky Sambala
 
-Portfolio personnel moderne, pensé mobile d'abord, animé et interactif. C'est un site statique (HTML, CSS et JavaScript uniquement) : aucune dépendance, aucune étape de build, et il s'héberge gratuitement.
+Portfolio personnel au style minimal et professionnel, pensé mobile d'abord. C'est un site statique (HTML, CSS et JavaScript uniquement) : aucune dépendance, aucune étape de build, et il s'héberge gratuitement.
 
 ## Structure
 
@@ -8,7 +8,7 @@ Portfolio personnel moderne, pensé mobile d'abord, animé et interactif. C'est 
 index.html              → structure et textes (profil, compétences, parcours, contact)
 assets/css/style.css    → design, thèmes, animations
 assets/js/projects.js   → ★ TES PROJETS (le seul fichier à modifier pour ajouter un projet)
-assets/js/main.js       → interactions (filtres, fiche projet, fond animé…)
+assets/js/main.js       → interactions (filtres, fiche projet, animations)
 assets/img/profile.jpg  → photo de profil
 assets/img/projets/     → mets ici les images et vidéos de tes projets
 ```
@@ -23,11 +23,10 @@ assets/img/projets/     → mets ici les images et vidéos de tes projets
   id: "ma-boutique",                       // unique, sans espaces
   title: "Boutique Shopify Mode",
   subtitle: "Refonte complète & tunnel de vente",
-  category: "web",                         // web | cro | data | ia | contenu
+  category: "web",                         // web | photo | cro | data | ia
   year: "2026",
   role: "Développeur Shopify",
   client: "Nom du client",
-  featured: true,                          // grande carte
   cover: "assets/img/projets/ma-boutique-cover.jpg",
   gallery: ["assets/img/projets/ma-boutique-1.jpg", "assets/img/projets/ma-boutique-2.jpg"],
   video: "https://www.youtube.com/watch?v=XXXXXXXXXXX", // YouTube, Vimeo ou .mp4
@@ -39,7 +38,7 @@ assets/img/projets/     → mets ici les images et vidéos de tes projets
 },
 ```
 
-Sans `cover`, une couverture animée est générée automatiquement (couleurs de `accent`, texte de `glyph`).
+Sans `cover`, une couverture sobre est générée automatiquement avec le texte de `glyph`.
 Les filtres et les compteurs se mettent à jour tout seuls. Chaque projet a aussi un lien direct : `…/#projet/<id>`.
 
 Pour créer une nouvelle catégorie (ex. « Photo »), ajoute-la dans `CATEGORIES` en haut du fichier.
@@ -61,11 +60,8 @@ Netlify ou Vercel fonctionnent aussi : importe le dépôt, sans commande de buil
 
 ## Fonctionnalités
 
-- Mobile d'abord : barre de navigation flottante en bas, fiche projet en « bottom sheet » (glisser vers le bas pour fermer)
-- Thème sombre / clair (mémorisé sur l'appareil)
-- Préchargement, titre animé lettre par lettre, métiers qui défilent, compteurs
-- Fond animé interactif (constellation de particules qui réagit au toucher et à la souris)
-- Cartes à effet 3D et halo lumineux, boutons magnétiques, curseur personnalisé (ordinateur)
-- Filtres de projets animés (FLIP), fiche complète avec galerie, vidéo, chiffres clés et liens
-- Timeline du parcours qui se remplit au scroll
+- Mobile d'abord : barre de navigation en bas de l'écran, fiche projet qui s'ouvre depuis le bas (glisser vers le bas pour fermer)
+- Thème clair par défaut, thème sombre en option (mémorisé sur l'appareil)
+- Animations discrètes : apparition au scroll, filtres de projets animés, timeline du parcours qui se remplit
+- Fiche projet complète : galerie photo, vidéo (YouTube, Vimeo ou .mp4), chiffres clés et liens
 - Accessible : navigation au clavier, respect de `prefers-reduced-motion`, focus visible
