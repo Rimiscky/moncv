@@ -4,8 +4,9 @@
    Copie un bloc { ... }, colle-le dans la liste et remplis les champs.
    Tous les champs sont optionnels sauf : id, title, category.
 
-   category : "web" | "photo" | "cro" | "data" | "ia"
-              (les filtres sont définis plus bas dans CATEGORIES)
+   category : la section où le projet apparaît :
+              "web" | "photo" | "video" | "design" | "data" | "cro" | "ia"
+              Pour plusieurs sections, utilise une liste : ["video", "photo"]
 
    cover    : image de couverture ("assets/img/projets/mon-projet.jpg").
               Sans image, une couverture sobre est générée automatiquement
@@ -19,12 +20,13 @@
    ========================================================================== */
 
 window.CATEGORIES = [
-  { id: "all", label: "Tous" },
-  { id: "web", label: "Web & e-commerce" },
-  { id: "photo", label: "Photo & Vidéo" },
-  { id: "cro", label: "Conversion & UX" },
+  { id: "web", label: "Web & code" },
+  { id: "photo", label: "Photographie" },
+  { id: "video", label: "Vidéo" },
+  { id: "design", label: "Design graphique" },
   { id: "data", label: "Data & BI" },
-  { id: "ia", label: "IA & Automatisation" },
+  { id: "cro", label: "Conversion & UX" },
+  { id: "ia", label: "IA & automatisation" },
 ];
 
 window.PROJECTS = [
@@ -45,24 +47,6 @@ window.PROJECTS = [
       "Amélioration des performances (vitesse, scripts, images) avec une méthodologie data-driven appuyée par des outils IA.",
     ],
     results: [],
-    links: [],
-    gallery: [],
-  },
-  {
-    id: "photo-video-portfolio",
-    title: "Photo & vidéo",
-    subtitle: "Sélection de prises de vue et de montages",
-    category: "photo",
-    year: "2022 – 2025",
-    role: "Photographe & vidéaste",
-    glyph: "Photo",
-    tags: ["Photographie", "Tournage", "Montage", "Réseaux sociaux"],
-    summary:
-      "Photos produits, portraits, lieux et vidéos courtes pour les marques et les réseaux sociaux.",
-    description: [
-      "Prise de vue, tournage et montage de contenus pour valoriser des produits, des lieux et des équipes, sur les sites web comme sur les réseaux sociaux.",
-      "À compléter : ajoute ta vidéo (champ video), tes photos (champ gallery) et les logiciels que tu utilises.",
-    ],
     links: [],
     gallery: [],
   },
@@ -160,7 +144,7 @@ window.PROJECTS = [
     id: "1745-bagelstein",
     title: "Le 17.45 & Bagelstein",
     subtitle: "Communication digitale & contenus",
-    category: "photo",
+    category: ["video", "photo"],
     year: "2024 – 2025",
     role: "Responsable communication digitale",
     client: "Le 17.45 & Bagelstein",

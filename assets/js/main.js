@@ -147,7 +147,8 @@
      ====================================================================== */
   const PROJECTS = window.PROJECTS || [];
   const CATEGORIES = window.CATEGORIES || [];
-  const catLabel = (id) => (CATEGORIES.find((c) => c.id === id) || {}).label || id;
+  const catsOf = (p) => [].concat(p.category || []);
+  const catLabel = (p) => { const id = catsOf(p)[0]; return (CATEGORIES.find((c) => c.id === id) || {}).label || id || ""; };
 
   const media = (p, eager = false) => {
     if (p.cover) return `<img src="${esc(safeUrl(p.cover))}" alt="" ${eager ? "" : 'loading="lazy"'} decoding="async" />`;
@@ -155,13 +156,13 @@
   };
 
   const cardHTML = (p) => `
-    <button class="project reveal" data-index="${PROJECTS.indexOf(p)}" data-cat="${esc(p.category)}" type="button" aria-label="Voir le projet ${esc(p.title)}">
+    <button class="project reveal" data-index="${PROJECTS.indexOf(p)}" type="button" aria-label="Voir le projet ${esc(p.title)}">
       <div class="project__media">
         ${media(p)}
         ${p.video ? '<span class="project__play" aria-hidden="true">▶</span>' : ""}
       </div>
       <div class="project__body">
-        <span class="project__cat">${esc(catLabel(p.category))}${p.year ? ` · ${esc(p.year)}` : ""}</span>
+        <span class="project__cat">${esc(catLabel(p))}${p.year ? ` · ${esc(p.year)}` : ""}</span>
         <h3 class="project__title">${esc(p.title)}</h3>
         ${p.summary ? `<p class="project__summary">${esc(p.summary)}</p>` : ""}
         <span class="project__more">En savoir plus</span>
@@ -173,37 +174,39 @@
     observeReveals(scope);
   };
 
-  // Grille filtrable
-  const grid = $("#project-grid");
-  const filtersEl = $(".filters");
-  if (grid && filtersEl) {
-    const cats = [{ id: "all", label: "Tous" }, ...CATEGORIES].filter((c) => c.id === "all" || PROJECTS.some((p) => p.category === c.id));
-    filtersEl.innerHTML = cats.map((c, i) => {
-      const n = c.id === "all" ? PROJECTS.length : PROJECTS.filter((p) => p.category === c.id).length;
-      return `<button class="filter${i === 0 ? " is-active" : ""}" role="tab" aria-selected="${i === 0}" data-filter="${esc(c.id)}">${esc(c.label)}<sup>${n}</sup></button>`;
-    }).join("");
-    grid.innerHTML = PROJECTS.map(cardHTML).join("");
-    bindCards(grid);
+  // Carrousels horizontaux : chaque section affiche les projets de ses catégories
+  const makeCarousel = (el, itemsHTML) => {
+    el.innerHTML = `
+      <div class="carousel__track">${itemsHTML}</div>
+      <div class="carousel__nav">
+        <button class="carousel__btn" type="button" data-dir="-1" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+        <button class="carousel__btn" type="button" data-dir="1" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+      </div>`;
+    const track = $(".carousel__track", el);
+    const [prev, next] = $$(".carousel__btn", el);
+    const update = () => {
+      prev.disabled = track.scrollLeft < 4;
+      next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 4;
+      $(".carousel__nav", el).hidden = track.scrollWidth <= track.clientWidth + 4;
+    };
+    $$(".carousel__btn", el).forEach((b) => b.addEventListener("click", () => {
+      const item = track.firstElementChild;
+      const step = item ? item.getBoundingClientRect().width + 20 : track.clientWidth * 0.8;
+      track.scrollBy({ left: +b.dataset.dir * step, behavior: reduceMotion ? "auto" : "smooth" });
+    }));
+    track.addEventListener("scroll", update, { passive: true });
+    addEventListener("resize", update);
+    update();
+    return track;
+  };
+  window.__makeCarousel = makeCarousel;
 
-    filtersEl.addEventListener("click", (e) => {
-      const btn = e.target.closest(".filter");
-      if (!btn || btn.classList.contains("is-active")) return;
-      $$(".filter", filtersEl).forEach((b) => { b.classList.toggle("is-active", b === btn); b.setAttribute("aria-selected", b === btn); });
-      const id = btn.dataset.filter;
-      const cards = $$(".project", grid);
-      const first = new Map(cards.map((c) => [c, c.getBoundingClientRect()]));
-      cards.forEach((c) => { c.classList.toggle("is-hidden", !(id === "all" || c.dataset.cat === id)); c.classList.add("is-in"); });
-      if (reduceMotion) return;
-      cards.forEach((c) => {
-        if (c.classList.contains("is-hidden")) return;
-        const a = first.get(c), b = c.getBoundingClientRect();
-        c.animate(a.width === 0
-          ? [{ opacity: 0, transform: "scale(0.96)" }, { opacity: 1, transform: "none" }]
-          : [{ transform: `translate(${a.left - b.left}px, ${a.top - b.top}px)` }, { transform: "none" }],
-          { duration: 500, easing: "cubic-bezier(0.28, 0.11, 0.32, 1)" });
-      });
-    });
-  }
+  $$(".carousel[data-cats]").forEach((el) => {
+    const cats = el.dataset.cats.split(",");
+    const items = PROJECTS.filter((p) => catsOf(p).some((c) => cats.includes(c)));
+    if (!items.length) return;
+    bindCards(makeCarousel(el, items.map(cardHTML).join("")));
+  });
 
   /* ---------- Fiche projet ---------- */
   const modal = $("#modal");
@@ -229,7 +232,7 @@
     return `
       <div class="pm__hero">${media(p, true)}</div>
       <div class="pm__content">
-        <span class="pm__cat">${esc(catLabel(p.category))}</span>
+        <span class="pm__cat">${esc(catLabel(p))}</span>
         <h2 class="pm__title" id="modal-title">${esc(p.title)}</h2>
         ${p.subtitle ? `<p class="pm__subtitle">${esc(p.subtitle)}</p>` : ""}
         ${facts.length ? `<div class="pm__facts">${facts.map(([k, v]) => `<div><span>${k}</span><strong>${esc(v)}</strong></div>`).join("")}</div>` : ""}

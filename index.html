@@ -26,8 +26,11 @@
       <a href="#top" class="gnav__logo" aria-label="Accueil">Rimiscky Sambala</a>
       <nav class="gnav__links" id="gnav-menu" aria-label="Navigation principale">
         <a href="#about">Profil</a>
-        <a href="#skills">Compétences</a>
-        <a href="#projects">Projets</a>
+        <a href="#web">Web &amp; code</a>
+        <a href="#photo">Photo</a>
+        <a href="#video">Vidéo</a>
+        <a href="#design">Design</a>
+        <a href="#data">Data</a>
         <a href="#journey">Parcours</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -44,7 +47,7 @@
         <p class="hero__title reveal">Chef de projet digital.</p>
         <p class="hero__lead reveal">Web &amp; code, photo, vidéo et data.<br />Des projets digitaux pensés de A à Z.</p>
         <div class="hero__cta reveal">
-          <a href="#projects" class="btn">Voir mes projets</a>
+          <a href="#web" class="btn">Voir mes projets</a>
           <a href="#contact" class="link-more">Me contacter</a>
         </div>
       </div>
@@ -67,32 +70,90 @@
       </div>
     </section>
 
-    <!-- COMPETENCES -->
-    <section class="section" id="skills">
+    <!-- BOÎTE À OUTILS -->
+    <section class="section" id="tools">
       <div class="wrap">
-        <header class="section__head">
-          <p class="kicker reveal">Compétences</p>
-          <h2 class="headline reveal">Ce que j'apporte à une équipe.</h2>
+        <header class="section__head section__head--center">
+          <p class="kicker reveal">Boîte à outils</p>
+          <h2 class="headline reveal">Toute la suite Adobe.<br />Et bien plus.</h2>
+          <p class="sub reveal">Photo, vidéo, design, web et data : les bons outils pour chaque étape d'un projet.</p>
         </header>
-        <div class="tiles">
-          <article class="tile reveal"><h3>Gestion de projet digital</h3><p>Cadrage, planning, coordination des intervenants, suivi des livrables. Agile / Scrum.</p></article>
-          <article class="tile reveal"><h3>Web &amp; e-commerce</h3><p>Shopify, WordPress, PrestaShop, HTML, CSS, JavaScript.</p></article>
-          <article class="tile reveal"><h3>Photo &amp; vidéo</h3><p>Prise de vue, tournage, montage, contenus pour les réseaux sociaux.</p></article>
-          <article class="tile reveal"><h3>Data &amp; conversion</h3><p>GA4, Google Tag Manager, tests A/B, SEO, tableaux de bord.</p></article>
-        </div>
+        <ul class="apps">
+          <li class="app reveal" style="--h:205"><span class="app__icon">Ps</span><span class="app__name">Photoshop</span></li>
+          <li class="app reveal" style="--h:200"><span class="app__icon">Lr</span><span class="app__name">Lightroom</span></li>
+          <li class="app reveal" style="--h:32"><span class="app__icon">Ai</span><span class="app__name">Illustrator</span></li>
+          <li class="app reveal" style="--h:340"><span class="app__icon">Id</span><span class="app__name">InDesign</span></li>
+          <li class="app reveal" style="--h:245"><span class="app__icon">Pr</span><span class="app__name">Premiere Pro</span></li>
+          <li class="app reveal" style="--h:260"><span class="app__icon">Ae</span><span class="app__name">After Effects</span></li>
+          <li class="app reveal" style="--h:168"><span class="app__icon">Au</span><span class="app__name">Audition</span></li>
+          <li class="app reveal" style="--h:230"><span class="app__icon">Me</span><span class="app__name">Media Encoder</span></li>
+        </ul>
       </div>
     </section>
 
-    <!-- PROJETS -->
-    <section class="section section--alt" id="projects">
+    <!-- WEB & CODE -->
+    <section class="section section--alt domain" id="web">
       <div class="wrap">
         <header class="section__head">
-          <p class="kicker reveal">Projets</p>
-          <h2 class="headline reveal">Une sélection de réalisations.</h2>
+          <p class="kicker reveal">Web &amp; code</p>
+          <h2 class="headline reveal">Des sites rapides,<br />pensés pour convertir.</h2>
+          <p class="sub reveal">Sites vitrines et boutiques en ligne, sections sur-mesure, SEO technique et performance. De la maquette à la mise en ligne.</p>
         </header>
-        <div class="filters reveal" role="tablist" aria-label="Filtrer les projets"></div>
-        <div class="grid" id="project-grid"></div>
+        <ul class="chips reveal"><li>Shopify</li><li>Liquid</li><li>WordPress</li><li>PrestaShop</li><li>HTML / CSS</li><li>JavaScript</li><li>Git</li><li>SEO technique</li></ul>
       </div>
+      <div class="carousel" data-cats="web"></div>
+    </section>
+
+    <!-- PHOTO -->
+    <section class="section domain" id="photo">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="kicker reveal">Photographie</p>
+          <h2 class="headline reveal">L'image juste,<br />du déclenchement à l'export.</h2>
+          <p class="sub reveal">Portraits, produits, lieux et événements. Prise de vue, tri, retouche et étalonnage pour le web, les réseaux sociaux et le print.</p>
+        </header>
+        <ul class="chips reveal"><li class="chip-app" style="--h:200">Lightroom</li><li class="chip-app" style="--h:205">Photoshop</li><li>Retouche</li><li>Étalonnage</li><li>Photo produit</li><li>Portrait</li></ul>
+      </div>
+      <div class="carousel" data-cats="photo"></div>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="section section--dark domain" id="video">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="kicker reveal">Vidéo</p>
+          <h2 class="headline reveal">Des histoires<br />qui retiennent l'attention.</h2>
+          <p class="sub reveal">Tournage, montage, motion design et mixage audio. Formats courts pour les réseaux sociaux, films de marque et contenus web.</p>
+        </header>
+        <ul class="chips reveal"><li class="chip-app" style="--h:245">Premiere Pro</li><li class="chip-app" style="--h:260">After Effects</li><li class="chip-app" style="--h:168">Audition</li><li class="chip-app" style="--h:230">Media Encoder</li><li>Tournage</li><li>Motion design</li></ul>
+      </div>
+      <div class="carousel" data-cats="video"></div>
+    </section>
+
+    <!-- DESIGN -->
+    <section class="section domain" id="design">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="kicker reveal">Design graphique</p>
+          <h2 class="headline reveal">Une identité claire,<br />sur tous les supports.</h2>
+          <p class="sub reveal">Visuels pour les réseaux sociaux, supports print et digitaux, mises en page et déclinaisons graphiques.</p>
+        </header>
+        <ul class="chips reveal"><li class="chip-app" style="--h:32">Illustrator</li><li class="chip-app" style="--h:340">InDesign</li><li class="chip-app" style="--h:205">Photoshop</li><li>UX / UI</li><li>Print</li><li>Réseaux sociaux</li></ul>
+      </div>
+      <div class="carousel" data-cats="design"></div>
+    </section>
+
+    <!-- DATA -->
+    <section class="section section--alt domain" id="data">
+      <div class="wrap">
+        <header class="section__head">
+          <p class="kicker reveal">Data, conversion &amp; IA</p>
+          <h2 class="headline reveal">Mesurer, tester,<br />améliorer.</h2>
+          <p class="sub reveal">Tracking e-commerce, tableaux de bord, tests A/B et automatisations pour piloter les projets par la donnée.</p>
+        </header>
+        <ul class="chips reveal"><li>GA4</li><li>Google Tag Manager</li><li>Pixels Meta</li><li>A/B testing</li><li>Power BI</li><li>Python</li><li>N8N</li><li>Notion · Jira</li></ul>
+      </div>
+      <div class="carousel" data-cats="data,cro,ia"></div>
     </section>
 
     <!-- PARCOURS -->
