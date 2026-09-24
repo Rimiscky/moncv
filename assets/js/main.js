@@ -472,4 +472,64 @@
       else if (dy > 90) closeLb();
     });
   }
+
+  /* ======================================================================
+     DÉPÔTS GITHUB (chargés en direct depuis l'API publique de GitHub)
+     ====================================================================== */
+  const reposEl = $("#github-repos");
+  const SITE = window.SITE || {};
+  if (reposEl && SITE.github) {
+    const user = SITE.github;
+    const profile = `https://github.com/${encodeURIComponent(user)}`;
+    $("#github-profile") && ($("#github-profile").href = profile);
+    const langColors = { JavaScript: "#f1e05a", TypeScript: "#3178c6", HTML: "#e34c26", CSS: "#563d7c", Python: "#3572A5", PHP: "#4F5D95", Liquid: "#67b8de", "Jupyter Notebook": "#DA5B0B", Vue: "#41b883", Shell: "#89e051", SCSS: "#c6538c" };
+    const rtf = new Intl.RelativeTimeFormat("fr", { numeric: "auto" });
+    const ago = (d) => {
+      const days = Math.round((new Date(d) - Date.now()) / 86400000);
+      if (Math.abs(days) < 30) return rtf.format(days, "day");
+      if (Math.abs(days) < 365) return rtf.format(Math.round(days / 30), "month");
+      return rtf.format(Math.round(days / 365), "year");
+    };
+    const repoHTML = (r) => `
+      <article class="repo reveal">
+        <a class="repo__link" href="${esc(safeUrl(r.html_url))}" target="_blank" rel="noopener" aria-label="Dépôt ${esc(r.name)} sur GitHub"></a>
+        <div class="repo__top">
+          <svg class="repo__icon" viewBox="0 0 16 16"><path fill="currentColor" stroke="none" d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></svg>
+          <h4 class="repo__name">${esc(r.name)}</h4>
+        </div>
+        <p class="repo__desc">${esc(r.description || "Pas encore de description.")}</p>
+        <div class="repo__meta">
+          ${r.language ? `<span><i style="background:${langColors[r.language] || "#8e8e93"}"></i>${esc(r.language)}</span>` : ""}
+          ${r.stargazers_count ? `<span>★ ${r.stargazers_count}</span>` : ""}
+          <span>Mis à jour ${esc(ago(r.pushed_at || r.updated_at))}</span>
+        </div>
+        ${r.homepage ? `<a class="repo__site link-more" href="${esc(safeUrl(r.homepage))}" target="_blank" rel="noopener">Voir le site</a>` : ""}
+      </article>`;
+    const fallback = () => {
+      bindRepos(`<article class="repo repo--cta reveal"><a class="repo__link" href="${esc(profile)}" target="_blank" rel="noopener" aria-label="Profil GitHub"></a>
+        <h4 class="repo__name">Tous mes projets de code</h4><p class="repo__desc">Retrouvez mes dépôts directement sur GitHub.</p><span class="link-more">github.com/${esc(user)}</span></article>`);
+    };
+    const bindRepos = (html) => observeReveals(makeCarousel(reposEl, html));
+    const render = (list) => {
+      const hidden = (SITE.hiddenRepos || []).map((n) => n.toLowerCase());
+      const repos = list.filter((r) => !r.fork && !r.archived && !hidden.includes(r.name.toLowerCase()))
+        .sort((a, b) => new Date(b.pushed_at || b.updated_at) - new Date(a.pushed_at || a.updated_at));
+      if (!repos.length) return fallback();
+      bindRepos(repos.map(repoHTML).join(""));
+    };
+    const cacheKey = `gh:${user}`;
+    let cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(cacheKey)); } catch { /* indisponible */ }
+    if (cached && Date.now() - cached.t < 3600000) render(cached.data);
+    else {
+      fetch(`https://api.github.com/users/${encodeURIComponent(user)}/repos?sort=pushed&per_page=30`, { headers: { Accept: "application/vnd.github+json" } })
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then((data) => {
+          if (!Array.isArray(data)) throw new Error("format");
+          try { sessionStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), data })); } catch { /* indisponible */ }
+          render(data);
+        })
+        .catch(fallback);
+    }
+  }
 })();

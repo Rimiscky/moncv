@@ -19,6 +19,15 @@
 
    ========================================================================== */
 
+/* Réglages du site ---------------------------------------------------------
+   github      : ton nom d'utilisateur GitHub (dépôts affichés automatiquement)
+   hiddenRepos : noms de dépôts à ne pas afficher, ex. ["test", "brouillon"]
+   -------------------------------------------------------------------------- */
+window.SITE = {
+  github: "Rimiscky",
+  hiddenRepos: [],
+};
+
 window.CATEGORIES = [
   { id: "web", label: "Web & code" },
   { id: "photo", label: "Photographie" },
