@@ -66,12 +66,19 @@ Chaque étude de cas doit pointer vers une preuve publique, indiquer son état r
 Le site utilise la police système d'Apple (**SF Pro**) : elle s'affiche nativement sur iPhone, iPad et Mac.
 Apple n'autorise pas l'hébergement de SF Pro sur un site web ; sur Windows et Android, c'est **Inter**, très proche, qui prend le relais.
 
-## Prévisualiser en local
+## Prévisualiser et vérifier en local
 
 ```bash
+npm test
+node --check assets/js/main.js
+node --check assets/js/media.js
+node --check assets/js/projects.js
+node --check assets/js/repo-selection.js
 python3 -m http.server 8000
 # puis ouvre http://localhost:8000
 ```
+
+GitHub Actions exécute automatiquement les tests et les contrôles de syntaxe à chaque push et pull request.
 
 
 ## Mettre en ligne (gratuit)
