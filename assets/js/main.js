@@ -511,9 +511,7 @@
     };
     const bindRepos = (html) => observeReveals(makeCarousel(reposEl, html));
     const render = (list) => {
-      const hidden = (SITE.hiddenRepos || []).map((n) => n.toLowerCase());
-      const repos = list.filter((r) => !r.fork && !r.archived && !hidden.includes(r.name.toLowerCase()))
-        .sort((a, b) => new Date(b.pushed_at || b.updated_at) - new Date(a.pushed_at || a.updated_at));
+      const repos = window.selectFeaturedRepos(list, SITE.featuredRepos);
       if (!repos.length) return fallback();
       bindRepos(repos.map(repoHTML).join(""));
     };

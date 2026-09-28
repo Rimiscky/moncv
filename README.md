@@ -57,9 +57,9 @@ Tout se passe dans `assets/js/media.js` :
 
 ## GitHub
 
-Tes dépôts publics s'affichent automatiquement dans la section Web & code (hors forks et dépôts archivés).
-Pour masquer un dépôt, ajoute son nom dans `hiddenRepos` en haut de `assets/js/projects.js`.
-Pour qu'un dépôt ait une belle carte, renseigne sa description (et son site, si besoin) dans *About* sur GitHub.
+La section Web & code charge les dépôts publics, puis n’affiche que la sélection définie dans `featuredRepos` en haut de `assets/js/projects.js`. Cette liste évite d’exposer automatiquement les brouillons, exercices et dépôts sans preuve métier.
+
+Chaque étude de cas doit pointer vers une preuve publique, indiquer son état réel et expliciter ses limites. Les métriques non vérifiables et les mentions provisoires ne doivent pas être publiées.
 
 ## Police
 

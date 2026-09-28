@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import vm from "node:vm";
 
 const root = new URL("../", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
@@ -35,4 +36,46 @@ test("les métadonnées reprennent le positionnement principal", async () => {
 
   assert.match(html, /<title>Rimiscky Sambala — Consultant digital &amp; développeur web<\/title>/);
   assert.match(html, /<meta property="og:title" content="Rimiscky Sambala — Consultant digital &amp; développeur web"/);
+});
+
+test("les études de cas publiées correspondent à des projets vérifiables", async () => {
+  const source = await read("assets/js/projects.js");
+  const context = { window: {} };
+  vm.runInNewContext(source, context);
+
+  const projects = context.window.PROJECTS;
+  assert.deepEqual(
+    Array.from(projects, ({ id }) => id),
+    ["rozi", "churn-client", "data-cl", "photography-market"]
+  );
+  assert.ok(projects.every(({ links }) => links.some(({ url }) => url.startsWith("https://github.com/Rimiscky/"))));
+  assert.doesNotMatch(source, /À compléter/i);
+});
+
+test("la liste GitHub publique est limitée aux dépôts sélectionnés", async () => {
+  const projectsSource = await read("assets/js/projects.js");
+  const selectorSource = await read("assets/js/repo-selection.js");
+  const context = { window: {} };
+  vm.runInNewContext(projectsSource, context);
+  vm.runInNewContext(selectorSource, context);
+
+  const expected = ["Rozi", "churn-client-master1", "Data_CL", "professional-photography-market"];
+  assert.deepEqual(Array.from(context.window.SITE.featuredRepos), expected);
+
+  const repositories = [
+    { name: "brouillon", fork: false, archived: false },
+    ...expected.map((name) => ({ name, fork: false, archived: false })),
+  ].reverse();
+  const selected = context.window.selectFeaturedRepos(repositories, expected);
+  assert.deepEqual(Array.from(selected, ({ name }) => name), expected);
+  assert.deepEqual(Array.from(context.window.selectFeaturedRepos(repositories, [])), []);
+  assert.deepEqual(Array.from(context.window.selectFeaturedRepos(repositories)), []);
+  assert.deepEqual(
+    Array.from(context.window.selectFeaturedRepos([{ name: "Rozi", fork: true, archived: false }], ["Rozi"])),
+    []
+  );
+  assert.deepEqual(
+    Array.from(context.window.selectFeaturedRepos([{ name: "Rozi", fork: false, archived: true }], ["Rozi"])),
+    []
+  );
 });
