@@ -57,21 +57,28 @@ Tout se passe dans `assets/js/media.js` :
 
 ## GitHub
 
-Tes dépôts publics s'affichent automatiquement dans la section Web & code (hors forks et dépôts archivés).
-Pour masquer un dépôt, ajoute son nom dans `hiddenRepos` en haut de `assets/js/projects.js`.
-Pour qu'un dépôt ait une belle carte, renseigne sa description (et son site, si besoin) dans *About* sur GitHub.
+La section Web & code charge les dépôts publics, puis n’affiche que la sélection définie dans `featuredRepos` en haut de `assets/js/projects.js`. Cette liste évite d’exposer automatiquement les brouillons, exercices et dépôts sans preuve métier.
+
+Chaque étude de cas doit pointer vers une preuve publique, indiquer son état réel et expliciter ses limites. Les métriques non vérifiables et les mentions provisoires ne doivent pas être publiées.
 
 ## Police
 
 Le site utilise la police système d'Apple (**SF Pro**) : elle s'affiche nativement sur iPhone, iPad et Mac.
 Apple n'autorise pas l'hébergement de SF Pro sur un site web ; sur Windows et Android, c'est **Inter**, très proche, qui prend le relais.
 
-## Prévisualiser en local
+## Prévisualiser et vérifier en local
 
 ```bash
+npm test
+node --check assets/js/main.js
+node --check assets/js/media.js
+node --check assets/js/projects.js
+node --check assets/js/repo-selection.js
 python3 -m http.server 8000
 # puis ouvre http://localhost:8000
 ```
+
+GitHub Actions exécute automatiquement les tests et les contrôles de syntaxe à chaque push et pull request.
 
 
 ## Mettre en ligne (gratuit)

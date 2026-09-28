@@ -1,31 +1,17 @@
 /* ==========================================================================
-   MES PROJETS — c'est le seul fichier à modifier pour ajouter un projet.
-   --------------------------------------------------------------------------
-   Copie un bloc { ... }, colle-le dans la liste et remplis les champs.
-   Tous les champs sont optionnels sauf : id, title, category.
-
-   category : la section où le projet apparaît :
-              "web" | "photo" | "video" | "design" | "data" | "cro" | "ia"
-              Pour plusieurs sections, utilise une liste : ["video", "photo"]
-
-   cover    : image de couverture ("assets/img/projets/mon-projet.jpg").
-              Sans image, une couverture sobre est générée automatiquement
-              avec le texte "glyph".
-   gallery  : liste d'images affichées dans la fiche projet.
-   video    : lien YouTube, Vimeo ou fichier .mp4 (affiché dans la fiche).
-   links    : boutons (site en ligne, GitHub, Behance, PDF, Figma…).
-   results  : chiffres clés  -> { value: "+32 %", label: "taux de conversion" }
-              Mets uniquement des chiffres réels et vérifiables.
-
+   ÉTUDES DE CAS — projets publics sélectionnés pour leur valeur métier.
+   Les capacités, résultats et limites ci-dessous sont vérifiables dans les
+   dépôts liés. Ne pas ajouter de métrique sans source publique.
    ========================================================================== */
 
-/* Réglages du site ---------------------------------------------------------
-   github      : ton nom d'utilisateur GitHub (dépôts affichés automatiquement)
-   hiddenRepos : noms de dépôts à ne pas afficher, ex. ["test", "brouillon"]
-   -------------------------------------------------------------------------- */
 window.SITE = {
   github: "Rimiscky",
-  hiddenRepos: [],
+  featuredRepos: [
+    "Rozi",
+    "churn-client-master1",
+    "Data_CL",
+    "professional-photography-market",
+  ],
 };
 
 window.CATEGORIES = [
@@ -40,150 +26,110 @@ window.CATEGORIES = [
 
 window.PROJECTS = [
   {
-    id: "conroy-ecommerce",
-    title: "Conroy Vin & Spiritueux",
-    subtitle: "Optimisation d'un site e-commerce",
-    category: "web",
-    year: "2022 – 2023",
-    role: "Responsable projet digital (alternance)",
-    client: "Conroy Vin & Spiritueux — Sallanches",
-    glyph: "E-shop",
-    tags: ["WordPress", "PrestaShop", "SEO", "Performance"],
+    id: "rozi",
+    title: "Rozi",
+    subtitle: "Gestion de stock traçable pour PME et quincailleries",
+    category: ["web", "data"],
+    year: "2026",
+    role: "Conception produit et développement full-stack",
+    client: "Démonstrateur métier",
+    glyph: "Stock",
+    tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Auth.js"],
     summary:
-      "Refonte des pages produit, modules interactifs et optimisation des performances d'une boutique de vins & spiritueux.",
+      "Un MVP de gestion de stock qui sécurise les mouvements, les commandes fournisseurs et la traçabilité opérationnelle.",
     description: [
-      "Pilotage de l'optimisation du site e-commerce (WordPress & PrestaShop) : intégration de pages produit et de modules interactifs, création de contenus optimisés SEO.",
-      "Amélioration des performances (vitesse, scripts, images) avec une méthodologie data-driven appuyée par des outils IA.",
+      "Le besoin : permettre à une petite structure de savoir ce qui reste en stock, pourquoi une quantité a changé et quels produits doivent être réapprovisionnés.",
+      "La solution associe rôles serveur, transactions PostgreSQL, verrouillage des mouvements, bons de commande, imports CSV sécurisés, journal d'audit et indicateurs de rotation.",
+      "État vérifié : MVP fonctionnel avec tests unitaires et PostgreSQL en CI. Limites assumées : mono-établissement, réception complète uniquement, sans caisse ni comptabilité.",
     ],
-    results: [],
-    links: [],
+    results: [
+      { value: "CI", label: "tests, types et build automatisés" },
+      { value: "0", label: "donnée client dans la démonstration" },
+    ],
+    links: [
+      { label: "Voir le dépôt", url: "https://github.com/Rimiscky/Rozi" },
+    ],
     gallery: [],
   },
   {
-    id: "shopify-theme",
-    title: "Thème Shopify sur-mesure",
-    subtitle: "Sections Liquid & pages produit orientées conversion",
-    category: "web",
-    year: "2025",
-    role: "Développeur Shopify",
-    glyph: "Liquid",
-    tags: ["Shopify", "Liquid", "JavaScript", "Responsive"],
+    id: "churn-client",
+    title: "Prédiction du churn client",
+    subtitle: "Comparer des modèles sans sacrifier l'explicabilité",
+    category: ["data", "ia"],
+    year: "2026",
+    role: "Data science et évaluation",
+    client: "Projet académique — Master 1",
+    glyph: "ML",
+    tags: ["Python", "scikit-learn", "Pandas", "Machine Learning"],
     summary:
-      "Création de sections personnalisables et d'une page produit pensée pour le mobile et la conversion.",
+      "Un pipeline reproductible pour détecter les clients à risque et comparer régression logistique, arbre de décision et Random Forest.",
     description: [
-      "Personnalisation d'un thème Shopify : sections dynamiques éditables depuis l'éditeur, blocs de réassurance, sticky add-to-cart mobile.",
-      "À compléter : contexte, lien de la boutique, captures avant / après.",
+      "Le jeu Telco Customer Churn est préparé sans fuite de données grâce à des pipelines appris uniquement sur l'entraînement et une validation croisée à cinq plis.",
+      "La régression logistique est retenue pour sa lisibilité : son ROC-AUC recalculé de 0,841 reste proche des 0,842 de la Random Forest sur le découpage documenté.",
+      "Limite : entraînement et évaluation fonctionnent localement ; le parcours de prédiction sur de nouveaux clients et le monitoring restent documentés mais non implémentés.",
     ],
-    links: [],
+    results: [
+      { value: "0,841", label: "ROC-AUC de la régression logistique" },
+      { value: "3", label: "modèles classiques comparés" },
+    ],
+    links: [
+      { label: "Voir le dépôt", url: "https://github.com/Rimiscky/churn-client-master1" },
+    ],
     gallery: [],
   },
   {
-    id: "ab-testing",
-    title: "Programme d'A/B testing",
-    subtitle: "Landing pages, fiches produit & CTA",
-    category: "cro",
-    year: "2025",
-    role: "CRO / UX",
-    glyph: "A / B",
-    tags: ["A/B test", "Heatmaps", "Scroll depth", "UX"],
-    summary:
-      "Construction d'hypothèses à partir des heatmaps et du scroll depth, puis tests A/B sur les CTA et landing pages.",
-    description: [
-      "Analyse UX (heatmaps, scroll depth, parcours) pour identifier les frictions du funnel, priorisation des hypothèses, mise en place des variantes et lecture des résultats.",
-      "À compléter : outil utilisé, hypothèses testées, résultats mesurés.",
-    ],
-    links: [],
-    gallery: [],
-  },
-  {
-    id: "tracking-dashboard",
-    title: "Tracking & tableau de bord KPI",
-    subtitle: "GA4, Google Tag Manager, pixels Meta",
+    id: "data-cl",
+    title: "Pipeline de données énergétiques",
+    subtitle: "Ingestion, ETL, gouvernance et visualisation multi-régions",
     category: "data",
-    year: "2025",
-    role: "Tracking & Data",
-    glyph: "KPI",
-    tags: ["GA4", "GTM", "Meta Pixel", "Power BI"],
+    year: "2026",
+    role: "Data engineering et visualisation",
+    client: "Projet de données ouvertes",
+    glyph: "ETL",
+    tags: ["Python", "Airflow", "PostgreSQL", "Docker", "Streamlit"],
     summary:
-      "Plan de marquage e-commerce complet et tableau de bord de suivi des KPIs de vente.",
+      "Un pipeline de bout en bout qui rapproche consommation électrique et météo pour produire des tableaux de bord régionaux.",
     description: [
-      "Mise en place du tracking e-commerce (GA4, Google Tag Manager, pixels Meta) et construction d'un tableau de bord pour suivre trafic, conversions et panier moyen.",
-      "À compléter : captures du dashboard, périmètre, décisions prises grâce aux données.",
+      "Le projet ingère les données publiques ODRE, Open-Meteo et RTE, normalise les schémas, rapproche énergie et météo puis calcule des contrôles de qualité.",
+      "L'orchestration Airflow, PostgreSQL, les tableaux de bord Plotly et l'application Streamlit rendent chaque étape observable et réexécutable.",
+      "Limite : les services externes et le déploiement décrits dépendent de l'infrastructure et des secrets de l'environnement ; le dépôt ne garantit pas leur disponibilité permanente.",
     ],
-    links: [],
+    results: [
+      { value: "3", label: "sources de données documentées" },
+      { value: "4", label: "régions configurées" },
+    ],
+    links: [
+      { label: "Voir le dépôt", url: "https://github.com/Rimiscky/Data_CL" },
+    ],
     gallery: [],
   },
   {
-    id: "gxo-data",
-    title: "Analyse de données logistiques",
-    subtitle: "Détection d'anomalies & optimisation des flux",
-    category: "data",
-    year: "2023 – 2024",
-    role: "Assistant data logistique",
-    client: "GXO (Amazon)",
-    glyph: "Data",
-    tags: ["Analyse", "Qualité des données", "Flux", "TOUNT", "FLEX AFTX"],
+    id: "photography-market",
+    title: "Marketplace photo professionnelle",
+    subtitle: "Protéger, publier et licencier des images",
+    category: ["web", "photo"],
+    year: "2026",
+    role: "Architecture produit et développement full-stack",
+    client: "Prototype de marketplace française",
+    glyph: "Photo",
+    tags: ["Next.js", "TypeScript", "Drizzle", "D1", "R2"],
     summary:
-      "Analyse d'anomalies et vérification des données internes pour fiabiliser et optimiser les flux logistiques.",
+      "Un prototype orienté droits d'auteur avec originaux privés, aperçus filigranés et autorisations serveur.",
     description: [
-      "Analyse d'anomalies et vérification des données internes, optimisation des flux grâce à une approche orientée data, utilisation des outils métiers (TOUNT, FLEX AFTX).",
+      "Le parcours couvre l'onboarding photographe, l'import authentifié, la validation des fichiers, les métadonnées, le copyright et la publication contrôlée.",
+      "Les originaux restent privés tandis que quatre dérivés WebP protégés sont générés pour le catalogue de démonstration.",
+      "Limites affichées : catalogue et statistiques fictifs, moteur de traitement lancé manuellement, paiements et livraison autorisée des originaux non implémentés.",
     ],
-    links: [],
-    gallery: [],
-  },
-  {
-    id: "n8n-automation",
-    title: "Automatisations N8N",
-    subtitle: "Workflows IA pour le marketing et le reporting",
-    category: "ia",
-    year: "2025",
-    role: "Automatisation & IA",
-    glyph: "n8n",
-    tags: ["N8N", "IA", "API", "Python"],
-    summary:
-      "Workflows automatisés : collecte de données, enrichissement par IA et envoi de rapports.",
-    description: [
-      "Conception de workflows N8N connectant formulaires, CRM, tableurs et modèles d'IA pour réduire les tâches répétitives.",
-      "À compléter : cas d'usage précis, schéma du workflow, temps gagné.",
+    results: [
+      { value: "4", label: "aperçus WebP protégés par original" },
+      { value: "RBAC", label: "rôles et propriété contrôlés côté serveur" },
     ],
-    links: [],
-    gallery: [],
-  },
-  {
-    id: "1745-bagelstein",
-    title: "Le 17.45 & Bagelstein",
-    subtitle: "Communication digitale & contenus",
-    category: ["video", "photo"],
-    year: "2024 – 2025",
-    role: "Responsable communication digitale",
-    client: "Le 17.45 & Bagelstein",
-    glyph: "Photo · Vidéo",
-    tags: ["Photo", "Vidéo", "KPI", "Social media"],
-    summary:
-      "Création de contenus photo & vidéo, pilotage des KPIs et amélioration des funnels de vente locaux.",
-    description: [
-      "Création de contenus (photo, vidéo), gestion des KPIs (engagement, conversions locales) et amélioration de la visibilité et des funnels de vente.",
-      "À compléter : ajoute tes meilleures vidéos (champ video) et photos (champ gallery).",
+    links: [
+      {
+        label: "Voir le dépôt",
+        url: "https://github.com/Rimiscky/professional-photography-market",
+      },
     ],
-    links: [],
-    gallery: [],
-  },
-  {
-    id: "freelance-sites",
-    title: "Sites vitrines & e-commerce",
-    subtitle: "Missions freelance de A à Z",
-    category: "web",
-    year: "2022 – 2025",
-    role: "Développeur web freelance",
-    glyph: "Web",
-    tags: ["WordPress", "PrestaShop", "SEO technique", "UX"],
-    summary:
-      "Création de sites vitrines et e-commerce, SEO technique et intégration de modules marketing.",
-    description: [
-      "Création de sites vitrines & e-commerce (WordPress / PrestaShop), optimisation SEO technique (vitesse, images, structure), intégration de modules marketing (CTA, formulaires, sections) et gestion de projet de A à Z.",
-      "À compléter : liste des sites réalisés avec leurs liens.",
-    ],
-    links: [{ label: "rimiscky.fr", url: "https://www.rimiscky.fr" }],
     gallery: [],
   },
 ];
